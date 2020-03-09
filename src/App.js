@@ -20,9 +20,7 @@ const Cell = ({ columnId, children }) => (
         isActiveRow={isActiveRow}
         {...bind}
       >
-        <>
-          <Point isActive={isActive} />
-        </>
+        <Point isActive={isActive} />
       </StyledCell>
     )}
   </HoverTable.Cell>
@@ -44,72 +42,32 @@ export default function App() {
         )}
       >
         <Row id="row-one">
-          <Cell columnId="column-one">
-            <Point />
-          </Cell>
-          <Cell columnId="column-two">
-            <Point />
-          </Cell>
-          <Cell columnId="column-three">
-            <Point />
-          </Cell>
-          <Cell columnId="column-four">
-            <Point />
-          </Cell>
-          <Cell columnId="column-five">
-            <Point />
-          </Cell>
+          <Cell columnId="column-one" />
+          <Cell columnId="column-two" />
+          <Cell columnId="column-three" />
+          <Cell columnId="column-four" />
+          <Cell columnId="column-five" />
         </Row>
         <Row id="row-two">
-          <Cell columnId="column-one">
-            <Point />
-          </Cell>
-          <Cell columnId="column-two">
-            <Point />
-          </Cell>
-          <Cell columnId="column-three">
-            <Point />
-          </Cell>
-          <Cell columnId="column-four">
-            <Point />
-          </Cell>
-          <Cell columnId="column-five">
-            <Point />
-          </Cell>
+          <Cell columnId="column-one" />
+          <Cell columnId="column-two" />
+          <Cell columnId="column-three" />
+          <Cell columnId="column-four" />
+          <Cell columnId="column-five" />
         </Row>
         <Row id="row-three">
-          <Cell columnId="column-one">
-            <Point />
-          </Cell>
-          <Cell columnId="column-two">
-            <Point />
-          </Cell>
-          <Cell columnId="column-three">
-            <Point />
-          </Cell>
-          <Cell columnId="column-four">
-            <Point />
-          </Cell>
-          <Cell columnId="column-five">
-            <Point />
-          </Cell>
+          <Cell columnId="column-one" />
+          <Cell columnId="column-two" />
+          <Cell columnId="column-three" />
+          <Cell columnId="column-four" />
+          <Cell columnId="column-five" />
         </Row>
         <Row id="row-four">
-          <Cell columnId="column-one">
-            <Point />
-          </Cell>
-          <Cell columnId="column-two">
-            <Point />
-          </Cell>
-          <Cell columnId="column-three">
-            <Point />
-          </Cell>
-          <Cell columnId="column-four">
-            <Point />
-          </Cell>
-          <Cell columnId="column-five">
-            <Point />
-          </Cell>
+          <Cell columnId="column-one" />
+          <Cell columnId="column-two" />
+          <Cell columnId="column-three" />
+          <Cell columnId="column-four" />
+          <Cell columnId="column-five" />
         </Row>
       </HoverTable.default>
     </div>
