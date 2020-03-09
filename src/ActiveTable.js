@@ -1,4 +1,4 @@
-import React, { useContext, createContext, useState } from "react";
+import React, { useContext, createContext, useState, useMemo } from "react";
 
 export const TableContext = createContext({
   activeRow: null,
@@ -6,7 +6,7 @@ export const TableContext = createContext({
   setActiveRow: () => {},
   setActiveColumn: () => {}
 });
-export const RowContext = createContext({ id: null });
+export const RowContext = createContext(null);
 export const CellContext = createContext({
   isActiveColumn: false,
   isActiveRow: false,
@@ -14,8 +14,8 @@ export const CellContext = createContext({
 });
 
 export const Table = ({
-  render = ({ children, ...props }) => (
-    <table {...props}>
+  render = ({ children }) => (
+    <table>
       <tbody>{children}</tbody>
     </table>
   ),
@@ -27,38 +27,49 @@ export const Table = ({
     <TableContext.Provider
       value={{ activeRow, setActiveRow, activeColumn, setActiveColumn }}
     >
-      {render(props)}
+      {useMemo(() => render({ children: props.children }), [
+        props.children,
+        render
+      ])}
     </TableContext.Provider>
   );
 };
 
-export const Row = ({ id, render = props => <tr {...props} />, ...props }) => {
-  const { activeRow } = useContext(TableContext);
-  return (
-    <RowContext.Provider value={{ id }}>
-      {render({ ...props, isActiveRow: activeRow === id })}
-    </RowContext.Provider>
-  );
-};
+export const Row = React.forwardRef(
+  ({ id, render = props => <tr {...props} />, ...props }, ref) => {
+    const { activeRow } = useContext(TableContext);
+    const isActiveRow = activeRow === id;
+    return (
+      <RowContext.Provider value={id}>
+        {useMemo(() => render({ ...props, isActiveRow, ref }), [
+          isActiveRow,
+          props,
+          ref,
+          render
+        ])}
+      </RowContext.Provider>
+    );
+  }
+);
 
-export const Cell = ({
-  columnId,
-  render = props => <td {...props} />,
-  ...props
-}) => {
-  const { id: rowId } = useContext(RowContext);
-  const { activeRow, activeColumn } = useContext(TableContext);
-  return (
-    <CellContext.Provider
-      value={{
-        isActiveColumn: columnId === activeColumn,
-        isActiveRow: rowId === activeRow,
-        isActive: rowId === activeRow && columnId === activeColumn
-      }}
-    >
-      <CellContext.Consumer>{render}</CellContext.Consumer>
-    </CellContext.Provider>
-  );
-};
+export const Cell = React.forwardRef(
+  ({ columnId, render = props => <td {...props} />, ...props }, ref) => {
+    const rowId = useContext(RowContext);
+    const { activeRow, activeColumn } = useContext(TableContext);
+    return (
+      <CellContext.Provider
+        value={{
+          isActiveColumn: columnId === activeColumn,
+          isActiveRow: rowId === activeRow,
+          isActive: rowId === activeRow && columnId === activeColumn
+        }}
+      >
+        <CellContext.Consumer>
+          {context => render({ ...props, ...context, ref })}
+        </CellContext.Consumer>
+      </CellContext.Provider>
+    );
+  }
+);
 
 export default Table;

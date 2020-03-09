@@ -11,36 +11,36 @@ import {
   Point
 } from "./styles";
 
-const Cell = ({ columnId, children }) => (
-  <HoverTable.Cell columnId={columnId}>
-    {({ isActive, isActiveColumn, isActiveRow, bind }) => (
-      <StyledCell
-        isActiveCell={isActive}
-        isActiveColumn={isActiveColumn}
-        isActiveRow={isActiveRow}
-        {...bind}
-      >
-        <Point isActive={isActive} />
-      </StyledCell>
-    )}
-  </HoverTable.Cell>
+const MyCell = ({ isActive, isActiveColumn, isActiveRow, ...props }) => (
+  <StyledCell
+    isActiveCell={isActive}
+    isActiveColumn={isActiveColumn}
+    isActiveRow={isActiveRow}
+    {...props}
+  >
+    <Point isActive={isActive} />
+  </StyledCell>
 );
 
-const Row = props => (
-  <HoverTable.Row {...props} render={props => <StyledRow {...props} />} />
+const Cell = ({ columnId, children }) => (
+  <HoverTable.Cell columnId={columnId}>{MyCell}</HoverTable.Cell>
+);
+
+const RowOuter = props => <StyledRow {...props} />;
+
+const Row = props => <HoverTable.Row {...props} render={RowOuter} />;
+
+const Table = props => (
+  <StyledTable>
+    <StyledTableBody {...props} />
+  </StyledTable>
 );
 
 export default function App() {
   return (
-    <div class="App">
+    <div className="App">
       Hover over a cell
-      <HoverTable.default
-        render={props => (
-          <StyledTable>
-            <StyledTableBody {...props} />
-          </StyledTable>
-        )}
-      >
+      <HoverTable.default render={Table}>
         <Row id="row-one">
           <Cell columnId="column-one" />
           <Cell columnId="column-two" />
